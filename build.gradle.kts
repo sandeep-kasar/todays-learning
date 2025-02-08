@@ -1,4 +1,5 @@
 
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
@@ -25,8 +26,6 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.content.negotiation)
-    implementation(libs.mongodb.driver.core)
-    implementation(libs.mongodb.driver.sync)
     implementation(libs.bson)
     implementation(libs.ktor.serialization.gson)
     implementation(libs.ktor.server.swagger)
@@ -35,4 +34,11 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+
+    //MongoDB
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.10.1")
+
+    //Client
+    implementation("io.ktor:ktor-client-core:3.0.3")
+    implementation("io.ktor:ktor-client-cio:3.0.3")
 }
