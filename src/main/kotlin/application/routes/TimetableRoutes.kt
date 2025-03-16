@@ -1,14 +1,8 @@
 package com.today.application.routes
 
-import application.request.TimetableRequest
+import application.response.BaseResponse
 import com.today.domain.ports.TimeTableRepository
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.bson.types.ObjectId
@@ -16,15 +10,7 @@ import org.koin.ktor.ext.inject
 
 fun Route.timetableRoutes() {
     val repository: TimeTableRepository by application.inject()
-    route("/timetable") {
-
-        get("/all") {
-            repository.findAll()?.let { list ->
-                call.respond(list.map { it.toResponse() })
-            } ?: call.respondText("No records found")
-
-
-        }
+    route("v1/timetable") {
 
         get("/{id?}") {
             val id = call.parameters["id"]
@@ -39,7 +25,7 @@ fun Route.timetableRoutes() {
             } ?: call.respondText("No records found for id $id")
         }
 
-        get("/{standardId?}/division") {
+        get("/{standardId?}/{division}") {
             val standardId = call.parameters["standardId"]
             val division = call.parameters["division"]
             if (standardId.isNullOrEmpty()) {
@@ -55,23 +41,8 @@ fun Route.timetableRoutes() {
                 )
             }
             repository.getTimetableForStandard(standardId, division)?.let { list ->
-                call.respond(list.map { it.toResponse() })
+                call.respond(BaseResponse(status = "success", result = list.map { it.toResponse() }))
             } ?: call.respondText("No data found")
         }
-
-        post {
-            val timetable = call.receive<TimetableRequest>()
-        }
-    }
-}
-
-suspend fun requestSentenceTransform(input: String, huggingFaceURL: String): HttpResponse {
-    return HttpClient(CIO).use { client ->
-
-        val response = client.post(huggingFaceURL) {
-            val content = TextContent(input, ContentType.Text.Plain)
-            setBody(content)
-        }
-        response
     }
 }

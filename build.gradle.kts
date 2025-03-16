@@ -36,7 +36,7 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
 
     //MongoDB
-    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.10.1")
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.3.0")
 
     //Client
     implementation("io.ktor:ktor-client-core:3.0.3")

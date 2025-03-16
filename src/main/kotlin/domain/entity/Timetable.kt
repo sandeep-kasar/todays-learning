@@ -8,17 +8,16 @@ data class Timetable(
     @BsonId
     val id: ObjectId,
     val time: String? = null,
-    val subject: String? = null,
-    val `class`: Int? = null ,
+    val subject: Subject? = null,
     val standard: Int? = null,
     val division: String? = null,
 ) {
     fun toResponse() = TimetableResponse(
         id = id.toString(),
         time = time ?: "",
-        subject = subject ?: "",
+        subject = subject ?: Subject(),
         standard = standard ?: 1,
-        division = division ?: "A",
+        division = division ?: "A"
     )
 }
 
